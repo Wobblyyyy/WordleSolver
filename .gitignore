@@ -1,0 +1,25 @@
+# Project exclude paths
+/.gradle/
+/Pathfinder2/
+*.class
+target/
+bin/
+!.mvn/wrapper/maven-wrapper.jar
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+/pathfinder2-core/build
+/pathfinder2-OdometryCore/build
+/pathfinder2-geometry/build
+/pathfinder2-kinematics/build
+/pathfinder2-frc/build
+/pathfinder2-examples/build

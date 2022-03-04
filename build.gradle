@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+run {
+    standardInput = System.in
+}
+
+mainClassName = 'me.wobblyyyy.wordlesolver.WordleSolver'
+
