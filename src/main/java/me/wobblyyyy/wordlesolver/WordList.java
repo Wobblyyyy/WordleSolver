@@ -18,15 +18,17 @@ public class WordList extends ArrayList<Word> {
 
         allWords = new WordList(words.length);
 
-        for (String word : words)
+        for (String word : words) {
             allWords.add(new Word(word));
+        }
 
         scanner.close();
     }
 
     public static WordList getAllWords() {
-        if (allWords == null)
+        if (allWords == null) {
             loadWords();
+        }
 
         return allWords;
     }
@@ -42,9 +44,11 @@ public class WordList extends ArrayList<Word> {
     public WordList filter(Predicate<Word> predicate) {
         WordList list = new WordList(this.size());
 
-        for (Word word : this)
-            if (predicate.test(word))
+        for (Word word : this) {
+            if (predicate.test(word)) {
                 list.add(word);
+            }
+        }
 
         return list;
     }
@@ -60,8 +64,9 @@ public class WordList extends ArrayList<Word> {
             builder.append("\n");
         }
 
-        if (builder.length() > 0)
+        if (builder.length() > 0) {
             builder.setLength(builder.length() - 1);
+        }
 
         return builder.toString();
     }

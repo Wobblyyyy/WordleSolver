@@ -11,6 +11,8 @@ public enum Position {
 
     static int toInt(Position position) {
         switch (position) {
+            case NOT_IN_WORD: return -2;
+            case IN_WORD: return -1;
             case INDEX_1: return 0;
             case INDEX_2: return 1;
             case INDEX_3: return 2;
@@ -22,6 +24,8 @@ public enum Position {
 
     static Position toPosition(int i) {
         switch (i) {
+            case -2: return NOT_IN_WORD;
+            case -1: return IN_WORD;
             case 0: return INDEX_1;
             case 1: return INDEX_2;
             case 2: return INDEX_3;
