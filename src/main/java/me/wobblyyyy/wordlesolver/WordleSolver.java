@@ -1,16 +1,13 @@
 package me.wobblyyyy.wordlesolver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class WordleSolver {
-    // 0, 1, 2, 3, 4: char must be at index
-    // -1:            char can be anywhere
-    // -2:            char can not be in word
-    // -3:            no rules are applied for the char
-
     private static final String EXAMPLE = "example inputs:\n'a -2': " +
             "character 'a' may not be in the string\n'a -1': character 'a' " +
             "must be somewhere in the string\n'a 0': character 'a' must be " +
@@ -30,30 +27,17 @@ public class WordleSolver {
     private static final String HELP = EXAMPLE + "\n" + VALID_CHARS + "\n" +
             "type 'HELP' for help\ntype 'EXIT' to exit\ntype 'RESET' to reset";
     private static final Map<Character, Integer> reqs = new HashMap<>();
+    private static final List<Rule> rules = new ArrayList<>();
     private static String lastWord = "";
     private static WordList lastWordList;
 
     private static void showSolutions() {
         long start = System.currentTimeMillis();
+
         WordList solutions = lastWordList.filter((word) -> {
-            if (reqs.size() == 0)
-                return true;
-
-            for (Map.Entry<Character, Integer> entry : reqs.entrySet()) {
-                char character = entry.getKey();
-                int index = entry.getValue();
-
-                if (index == -3) {
-                    return true;
-                } else if (index > -1) {
-                    if (!word.charAtIndex(character, index))
-                        return false;
-                } else if (index == -1) {
-                    if (!word.containsChar(character))
-                        return false;
-                } else {
-                    if (!word.doesNotContainChar(character))
-                        return false;
+            for (Rule rule : rules) {
+                if (!rule.matches(word.getString())) {
+                    return false;
                 }
             }
 
@@ -99,13 +83,13 @@ public class WordleSolver {
 
                     switch (word.charAt(i)) {
                         case '_':
-                            reqs.put(c, -1); // somewhere in the word
+                            rules.add(new Rule(c, Position.IN_WORD));
                             break;
                         case '+':
-                            reqs.put(c, i); // in a specific place
+                            rules.add(new Rule(c, Position.toPosition(i)));
                             break;
                         case '-':
-                            reqs.put(c, -2); // not in the word
+                            rules.add(new Rule(c, Position.NOT_IN_WORD));
                             break;
                         default:
                             System.out.printf("invalid input <%s>! could " +
@@ -150,7 +134,7 @@ public class WordleSolver {
             return false;
         }
 
-        reqs.put(character, index);
+        rules.add(new Rule(character, Position.toPosition(index)));
 
         return true;
     }
@@ -180,7 +164,7 @@ public class WordleSolver {
                 break;
             } else if (line.contains("RESET") || line.equalsIgnoreCase("RESET")) {
                 System.out.print("reset solver!\n> ");
-                reqs.clear();
+                rules.clear();
                 lastWordList = WordList.getAllWords();
             } else if (parseString(line)) {
                 showSolutions();
